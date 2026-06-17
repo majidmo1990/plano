@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
@@ -30,6 +31,10 @@ class PlanoApp extends StatelessWidget {
       ),
       locale: const Locale('fa', 'IR'),
       supportedLocales: const [Locale('fa', 'IR')],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
       home: const PlannerPage(),
       debugShowCheckedModeBanner: false,
     );
@@ -103,8 +108,17 @@ class _PlannerPageState extends State<PlannerPage> {
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // ورودی متن
+              const Text(
+                'برنامه امروزت را بنویس',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF044541),
+                ),
+              ),
+              const SizedBox(height: 12),
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -121,7 +135,8 @@ class _PlannerPageState extends State<PlannerPage> {
                   controller: _controller,
                   maxLines: 4,
                   decoration: InputDecoration(
-                    hintText: 'برنامه‌ات را بنویس...',
+                    hintText: 'مثال: فردا ساعت ۶ بیداری، باشگاه، مراقبه',
+                    hintStyle: const TextStyle(color: Colors.grey),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
                       borderSide: BorderSide.none,
@@ -133,50 +148,48 @@ class _PlannerPageState extends State<PlannerPage> {
                 ),
               ),
               const SizedBox(height: 16),
-
-              // دکمه تحلیل
-              ElevatedButton.icon(
-                onPressed: _isLoading ? null : _sendToAI,
-                icon: _isLoading
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
-                        ),
-                      )
-                    : const Icon(Icons.auto_awesome),
-                label: Text(_isLoading ? 'در حال تحلیل...' : 'تحلیل با هوش مصنوعی'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF044541),
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: _isLoading ? null : _sendToAI,
+                  icon: _isLoading
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        )
+                      : const Icon(Icons.auto_awesome),
+                  label: Text(_isLoading ? 'در حال تحلیل...' : 'تحلیل با هوش مصنوعی'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF044541),
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
                   ),
-                  minimumSize: const Size(double.infinity, 50),
                 ),
               ),
               const SizedBox(height: 20),
-
-              // نمایش نتیجه
               if (_result.isNotEmpty)
                 Expanded(
-                  child: SingleChildScrollView(
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.1),
-                            blurRadius: 8,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.1),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: SingleChildScrollView(
                       child: Text(
                         _result,
                         style: const TextStyle(fontSize: 14),
