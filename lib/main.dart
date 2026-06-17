@@ -14,7 +14,7 @@ class PlanoApp extends StatelessWidget {
     return MaterialApp(
       title: 'پلنو',
       theme: ThemeData(
-        fontFamily: 'Vazir',
+        fontFamily: 'Vazirmatn',  // فونت سیستمی
         primaryColor: const Color(0xFF044541),
         colorScheme: const ColorScheme.light(
           primary: Color(0xFF044541),
