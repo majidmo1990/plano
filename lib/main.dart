@@ -93,6 +93,7 @@ class _PlannerPageState extends State<PlannerPage> {
   List<Map<String, dynamic>> _untimedTasks = [];
   bool _isLoading = false;
   String _error = '';
+  String _debugInfo = '';
   final String _apiUrl = 'http://181.41.194.56:5001/analyze';
 
   String _extractJson(String text) {
@@ -113,8 +114,7 @@ class _PlannerPageState extends State<PlannerPage> {
     setState(() {
       _isLoading = true;
       _error = '';
-      _timedTasks = [];
-      _untimedTasks = [];
+      _debugInfo = 'در حال ارسال...';
     });
 
     try {
@@ -125,6 +125,10 @@ class _PlannerPageState extends State<PlannerPage> {
             body: jsonEncode({'text': _controller.text}),
           )
           .timeout(const Duration(seconds: 30));
+
+      setState(() {
+        _debugInfo = 'Status: ${response.statusCode}';
+      });
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -153,9 +157,10 @@ class _PlannerPageState extends State<PlannerPage> {
         setState(() {
           _timedTasks = newTimed;
           _untimedTasks = newUntimed;
+          _debugInfo = '✅ ${newTimed.length} کار زمان‌دار، ${newUntimed.length} کار بدون زمان';
         });
 
-        // تنظیم نوتیفیکیشن برای کارهای زمان‌دار
+        // تنظیم نوتیفیکیشن
         for (var task in newTimed) {
           if (task['time'] != null && task['time'].toString().isNotEmpty) {
             final timeParts = task['time'].split(':');
@@ -184,6 +189,7 @@ class _PlannerPageState extends State<PlannerPage> {
       }
     } catch (e) {
       setState(() => _error = 'خطا: $e');
+      setState(() => _debugInfo = '❌ خطا: $e');
     } finally {
       setState(() => _isLoading = false);
     }
@@ -391,6 +397,13 @@ class _PlannerPageState extends State<PlannerPage> {
                     _error,
                     style: TextStyle(color: Colors.red.shade700),
                   ),
+                ),
+              ],
+              if (_debugInfo.isNotEmpty) ...[
+                const SizedBox(height: 8),
+                Text(
+                  _debugInfo,
+                  style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
                 ),
               ],
               const SizedBox(height: 12),
