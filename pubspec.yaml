@@ -15,9 +15,3 @@ dependencies:
 
 flutter:
   uses-material-design: true
-  fonts:
-    - family: Vazir
-      fonts:
-        - asset: assets/fonts/vazir_regular.ttf
-        - asset: assets/fonts/vazir_bold.ttf
-          weight: 700

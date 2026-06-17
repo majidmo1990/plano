@@ -14,13 +14,18 @@ class PlanoApp extends StatelessWidget {
     return MaterialApp(
       title: 'پلنو',
       theme: ThemeData(
-        fontFamily: 'Vazirmatn',  // فونت سیستمی
+        fontFamily: 'Vazirmatn',
         primaryColor: const Color(0xFF044541),
         colorScheme: const ColorScheme.light(
           primary: Color(0xFF044541),
           secondary: Color(0xFFe5f557),
         ),
         useMaterial3: true,
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(fontFamily: 'Vazirmatn'),
+          bodyMedium: TextStyle(fontFamily: 'Vazirmatn'),
+          labelLarge: TextStyle(fontFamily: 'Vazirmatn'),
+        ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             foregroundColor: Colors.white,
